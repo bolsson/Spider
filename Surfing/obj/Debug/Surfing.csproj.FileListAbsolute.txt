@@ -1,0 +1,11 @@
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\bin\Debug\Surfing.exe.config
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\bin\Debug\Surfing.exe
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\bin\Debug\Surfing.pdb
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\obj\Debug\Surfing.csprojResolveAssemblyReference.cache
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\obj\Debug\Surfing.exe
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\obj\Debug\Surfing.pdb
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\bin\Debug\AngleSharp.dll
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\bin\Debug\HtmlAgilityPack.dll
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\bin\Debug\AngleSharp.xml
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\bin\Debug\HtmlAgilityPack.pdb
+c:\users\adminbol\documents\visual studio 2013\Projects\Surfing\Surfing\bin\Debug\HtmlAgilityPack.xml
