@@ -20,3 +20,14 @@ C:\Users\adminbol\Documents\Visual Studio 2013\Projects\Spider\Surfing\bin\Debug
 C:\Users\adminbol\Documents\Visual Studio 2013\Projects\Spider\Surfing\obj\Debug\Spider.csprojResolveAssemblyReference.cache
 C:\Users\adminbol\Documents\Visual Studio 2013\Projects\Spider\Surfing\obj\Debug\Spider.exe
 C:\Users\adminbol\Documents\Visual Studio 2013\Projects\Spider\Surfing\obj\Debug\Spider.pdb
+C:\Work\Spider\Surfing\bin\Debug\Spider.exe.config
+C:\Work\Spider\Surfing\obj\Debug\Spider.exe
+C:\Work\Spider\Surfing\obj\Debug\Spider.pdb
+C:\Work\Spider\Surfing\bin\Debug\Spider.exe
+C:\Work\Spider\Surfing\bin\Debug\Spider.pdb
+C:\Work\Spider\Surfing\bin\Debug\AngleSharp.dll
+C:\Work\Spider\Surfing\bin\Debug\HtmlAgilityPack.dll
+C:\Work\Spider\Surfing\bin\Debug\AngleSharp.xml
+C:\Work\Spider\Surfing\bin\Debug\HtmlAgilityPack.pdb
+C:\Work\Spider\Surfing\bin\Debug\HtmlAgilityPack.xml
+C:\Work\Spider\Surfing\obj\Debug\Spider.csprojResolveAssemblyReference.cache
