@@ -35,6 +35,8 @@ namespace Spider
                     continue;
                 }
                 var linksOnPage = parser.FindLinksOnPage(htmlDoc.Result);
+                var wordsOnPage = parser.GetWords(htmlDoc.Result);
+                
                 linkTable.Add(linksOnPage);
             }
         }
@@ -94,10 +96,25 @@ namespace Spider
             return linkList.Select(atag => atag.GetAttributeValue("href", "no string")).Where(x => x.StartsWith("http://")).ToList();
         } 
 
-        public string FindBodyText(HtmlDocument htmlDocument)
+        public List<string> GetWords(HtmlDocument htmlDocument)
         {
-            return "";
+            var text = htmlDocument.DocumentNode.SelectSingleNode("//body").InnerText;
+            var cleanText = text.ToCharArray();
+            var arr = cleanText.Where(c => (char.IsLetter(c)
+            || char.IsWhiteSpace(c)
+            )).ToArray();
+            var cleanString = new string(arr);
+            var wordList = cleanString.Split().Where(word => word.Any()).ToList<string>();
+            //var wordList1 = text.Split().Where(word => word.ToCharArray).ToList<string>();
+
+            //HtmlNode body = htmlDocument.DocumentNode.Descendants().FirstOrDefault(x => x.Name.Equals("body"));
+
+            //if (body != null) body.Descendants("p").ToList();
+
+            return wordList;
         }
+
+      
     }
 
     class LinkTable

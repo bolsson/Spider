@@ -9,23 +9,21 @@ namespace InvertedIndex
     class InvertedIndex
     {
         Dictionary<string, List<string>> invertedIndex = new Dictionary<string, List<string>>();
-        public void Add(string url, List<string> wordsOnPage)
+        public void Add(string urlString, List<string> wordsOnPage)
         {
-            List<string> urlList;
-
             foreach (var word in wordsOnPage)
             {
-                if (invertedIndex.ContainsKey(word))
+                if (invertedIndex.ContainsKey(urlString))
                 {
-                    urlList = invertedIndex[word];
-                    urlList.Add(url);
+                    var wordList = invertedIndex[urlString];
+                    wordList.Add(word);
                 }
                 else
                 {
-                    urlList = new List<string>();
-                    urlList.Add(url); 
+                    var wordList = new List<string>();
+                    wordList.Add(word);
+                    invertedIndex.Add(urlString, wordList);
                 }
-                invertedIndex.Add(word, urlList);
             }
         }
     }

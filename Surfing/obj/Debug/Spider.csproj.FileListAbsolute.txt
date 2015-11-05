@@ -31,3 +31,14 @@ C:\Work\Spider\Surfing\bin\Debug\AngleSharp.xml
 C:\Work\Spider\Surfing\bin\Debug\HtmlAgilityPack.pdb
 C:\Work\Spider\Surfing\bin\Debug\HtmlAgilityPack.xml
 C:\Work\Spider\Surfing\obj\Debug\Spider.csprojResolveAssemblyReference.cache
+C:\Work\Spider-master\Surfing\bin\Debug\Spider.exe.config
+C:\Work\Spider-master\Surfing\obj\Debug\Spider.exe
+C:\Work\Spider-master\Surfing\obj\Debug\Spider.pdb
+C:\Work\Spider-master\Surfing\bin\Debug\Spider.exe
+C:\Work\Spider-master\Surfing\bin\Debug\Spider.pdb
+C:\Work\Spider-master\Surfing\bin\Debug\AngleSharp.dll
+C:\Work\Spider-master\Surfing\bin\Debug\HtmlAgilityPack.dll
+C:\Work\Spider-master\Surfing\bin\Debug\AngleSharp.xml
+C:\Work\Spider-master\Surfing\bin\Debug\HtmlAgilityPack.pdb
+C:\Work\Spider-master\Surfing\bin\Debug\HtmlAgilityPack.xml
+C:\Work\Spider-master\Surfing\obj\Debug\Spider.csprojResolveAssemblyReference.cache
