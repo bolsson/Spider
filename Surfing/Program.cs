@@ -9,6 +9,7 @@ using HtmlAgilityPack;
 //using System.Net.Http;
 using System.Collections.Generic;
 using System.IO;
+using InvertedIndex;
 
 //using System.Windows.Forms;
 
@@ -23,6 +24,7 @@ namespace Spider
             Spider spider = new Spider();
             LinkTable linkTable = new LinkTable();
             ParseHtml parser = new ParseHtml();
+            InvertedIndex.InvertedIndex store = new InvertedIndex.InvertedIndex();
 
             while (linkTable.HasLink())
             {
@@ -34,8 +36,9 @@ namespace Spider
                 {
                     continue;
                 }
-                var linksOnPage = parser.FindLinksOnPage(htmlDoc.Result);
+                var linksOnPage = parser.GetLinks(htmlDoc.Result);
                 var wordsOnPage = parser.GetWords(htmlDoc.Result);
+                store.Add(link, wordsOnPage);
                 
                 linkTable.Add(linksOnPage);
             }
@@ -85,7 +88,7 @@ namespace Spider
             return document;
         }
 
-        public List<string> FindLinksOnPage(HtmlDocument htmlDocument)
+        public List<string> GetLinks(HtmlDocument htmlDocument)
         {
             var linkList = new List<HtmlNode>();
 
@@ -98,19 +101,24 @@ namespace Spider
 
         public List<string> GetWords(HtmlDocument htmlDocument)
         {
-            var text = htmlDocument.DocumentNode.SelectSingleNode("//body").InnerText;
+            var wordList = new List<string>();
+            
+            
+            HtmlNode body = htmlDocument.DocumentNode.Descendants().FirstOrDefault(x => x.Name.Equals("body"));
+            if (body != null) {
+            var text = body.InnerText;
             var cleanText = text.ToCharArray();
             var arr = cleanText.Where(c => (char.IsLetter(c)
             || char.IsWhiteSpace(c)
             )).ToArray();
             var cleanString = new string(arr);
-            var wordList = cleanString.Split().Where(word => word.Any()).ToList<string>();
-            //var wordList1 = text.Split().Where(word => word.ToCharArray).ToList<string>();
+            wordList = cleanString.Split().Where(word => word.Any()).ToList<string>();
+                //var wordList1 = text.Split().Where(word => word.ToCharArray).ToList<string>();
 
-            //HtmlNode body = htmlDocument.DocumentNode.Descendants().FirstOrDefault(x => x.Name.Equals("body"));
+                //HtmlNode body = htmlDocument.DocumentNode.Descendants().FirstOrDefault(x => x.Name.Equals("body"));
 
-            //if (body != null) body.Descendants("p").ToList();
-
+                //if (body != null) body.Descendants("p").ToList();
+            }
             return wordList;
         }
 

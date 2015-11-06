@@ -19,13 +19,15 @@ namespace InvertedIndex
                 {
                     urlList = invertedIndex[word];
                     urlList.Add(url);
+                    invertedIndex[word] = urlList;
                 }
                 else
                 {
                     urlList = new List<string>();
-                    urlList.Add(url); 
+                    urlList.Add(url);
+                    invertedIndex.Add(word, urlList);
                 }
-                invertedIndex.Add(word, urlList);
+                
             }
         }
     }
