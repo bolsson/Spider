@@ -6,8 +6,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-//using System.Net.Http;
-using System.Collections.Generic;
 using System.IO;
 using InvertedIndex;
 
@@ -62,7 +60,7 @@ namespace Spider
                 var responseMessage = await _httpClient.GetAsync(link);
                 return responseMessage;
             }
-            catch (Exception e)
+            catch
             {
                 // on an exception send back the new response object, as it has no body it will produce no links but it will keep the spider crawling
                 HttpResponseMessage responseMessage = new HttpResponseMessage();
