@@ -9,12 +9,12 @@ namespace Spider
 
     class Node
     {
-        public int data;
+        public string token;
         public Node left, right;
 
-        public Node(int data)
+        public Node(string token)
         {
-            this.data = data;
+            this.token = token;
             left = null;
             right = null;
         }
@@ -28,11 +28,10 @@ namespace Spider
         public BinaryTreeImp()
         {
             root = null;
-
         }
-        public Node addNode(int data)
+        public Node addNode(string token)
         {
-            Node newNode = new Node(data);
+            Node newNode = new Node(token);
 
             if (root == null)
             {
@@ -50,33 +49,26 @@ namespace Spider
             Node temp;
             temp = root;
 
-            if (newNode.data < temp.data)
+            if (String.Compare(newNode.token, temp.token) < 0)
             {
                 if (temp.left == null)
                 {
                     temp.left = newNode;
-
                 }
-
                 else
                 {
-                    temp = temp.left;
-                    insertNode(temp, newNode);
-
+                    insertNode(temp.left, newNode);
                 }
             }
-            else if (newNode.data > temp.data)
+            else if (String.Compare(newNode.token, temp.token) > 0)
             {
                 if (temp.right == null)
                 {
                     temp.right = newNode;
-
                 }
-
                 else
                 {
-                    temp = temp.right;
-                    insertNode(temp, newNode);
+                    insertNode(temp.right, newNode);
                 }
             }
         }
@@ -86,7 +78,7 @@ namespace Spider
             if (root == null) return;
 
             displayTree(root.left);
-            System.Console.Write(root.data + " ");
+            System.Console.Write(root.token + " ");
             displayTree(root.right);
         }
 
