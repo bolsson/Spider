@@ -6,9 +6,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-//using System.Net.Http;
-using System.Collections.Generic;
 using System.IO;
+using InvertedIndex;
 
 //using System.Windows.Forms;
 
@@ -23,6 +22,7 @@ namespace Spider
             Spider spider = new Spider();
             LinkTable linkTable = new LinkTable();
             ParseHtml parser = new ParseHtml();
+            InvertedIndex.InvertedIndex store = new InvertedIndex.InvertedIndex();
 
             while (linkTable.HasLink())
             {
@@ -34,7 +34,10 @@ namespace Spider
                 {
                     continue;
                 }
-                var linksOnPage = parser.FindLinksOnPage(htmlDoc.Result);
+                var linksOnPage = parser.GetLinks(htmlDoc.Result);
+                var wordsOnPage = parser.GetWords(htmlDoc.Result);
+                store.Add(link, wordsOnPage);
+                
                 linkTable.Add(linksOnPage);
             }
         }
@@ -57,7 +60,7 @@ namespace Spider
                 var responseMessage = await _httpClient.GetAsync(link);
                 return responseMessage;
             }
-            catch (Exception e)
+            catch
             {
                 // on an exception send back the new response object, as it has no body it will produce no links but it will keep the spider crawling
                 HttpResponseMessage responseMessage = new HttpResponseMessage();
@@ -83,7 +86,7 @@ namespace Spider
             return document;
         }
 
-        public List<string> FindLinksOnPage(HtmlDocument htmlDocument)
+        public List<string> GetLinks(HtmlDocument htmlDocument)
         {
             var linkList = new List<HtmlNode>();
 
@@ -94,10 +97,30 @@ namespace Spider
             return linkList.Select(atag => atag.GetAttributeValue("href", "no string")).Where(x => x.StartsWith("http://")).ToList();
         } 
 
-        public string FindBodyText(HtmlDocument htmlDocument)
+        public List<string> GetWords(HtmlDocument htmlDocument)
         {
-            return "";
+            var wordList = new List<string>();
+            
+            
+            HtmlNode body = htmlDocument.DocumentNode.Descendants().FirstOrDefault(x => x.Name.Equals("body"));
+            if (body != null) {
+            var text = body.InnerText;
+            var cleanText = text.ToCharArray();
+            var arr = cleanText.Where(c => (char.IsLetter(c)
+            || char.IsWhiteSpace(c)
+            )).ToArray();
+            var cleanString = new string(arr);
+            wordList = cleanString.Split().Where(word => word.Any()).ToList<string>();
+                //var wordList1 = text.Split().Where(word => word.ToCharArray).ToList<string>();
+
+                //HtmlNode body = htmlDocument.DocumentNode.Descendants().FirstOrDefault(x => x.Name.Equals("body"));
+
+                //if (body != null) body.Descendants("p").ToList();
+            }
+            return wordList;
         }
+
+      
     }
 
     class LinkTable
