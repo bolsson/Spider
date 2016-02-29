@@ -11,6 +11,7 @@ namespace Spider
     }
 
     //NOTE: from https://dzone.com/articles/recursive-descent-parser-c
+    //NOTE: even better http://blog.roboblob.com/2014/12/12/introduction-to-recursive-descent-parsers-with-csharp/
 
     //public class Tokenizer
     //{
