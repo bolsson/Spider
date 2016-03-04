@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,22 +53,21 @@ namespace Spider
             get { return _word; }
         }
     }
-    class Tokenizer
+    class Tokens
     {
+        private List<Token> _tokenList;
 
-        private List<string> _tokenList;
-
-        public Tokenizer()
+        public Tokens()
         {
-            _tokenList = new List<string>();
+            _tokenList = new List<Token>();
         }
 
-        public void AddToken(string token)
+        public void AddToken(Token token)
         {
             _tokenList.Add(token);
         }
 
-        public string getNextToken()
+        public Token getNextToken()
         {
             var firstToken = _tokenList[0];
             _tokenList.RemoveAt(0);
@@ -78,5 +78,36 @@ namespace Spider
         {
             return _tokenList.Count() == 0;
         }
+    }
+
+    class Lexer
+    {
+        private StringReader _reader;
+        private Tokens _tokens;
+
+        public Lexer(string queryExpression)
+        {
+            _tokens = new Tokens();
+            _reader = new StringReader(queryExpression);
+        }
+
+        public Tokens Tokenize()
+        {
+            while (_reader.Peek() != -1)
+            {
+                var c = (char)_reader.Peek();
+                if (Char.IsWhiteSpace(c))
+                {
+                    _reader.Read();
+                    continue;
+                }
+                if (c == '(')
+                {
+                    _tokens.AddToken(new ParenthesisBeginToken());
+                }
+            }
+            return _tokens;
+        }
+
     }
 }
