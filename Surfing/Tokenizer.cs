@@ -105,9 +105,51 @@ namespace Spider
                 {
                     _tokens.AddToken(new ParenthesisBeginToken());
                 }
+                else if (c == ')')
+                {
+                    _tokens.AddToken(new ParenthesisEndToken());
+                }
+                else if (Char.IsLetterOrDigit(c))
+                {
+                    var word = GetWord(_reader);
+                    if (word == "AND")
+                    {
+                        _tokens.AddToken(new AndToken());
+                    }
+                    else if (word == "OR")
+                    {
+                        _tokens.AddToken(new OrToken());
+                    }
+                    else if (word == "ANDNOT")
+                    {
+                        _tokens.AddToken(new AndNotToken());
+                    }
+                    else { }
+                }
+               
+                
+                else
+                    throw new Exception("Unknown character in expression: " + c);
             }
             return _tokens;
         }
 
+        private string GetWord(StringReader reader)
+        {
+            List<char> letterList = new List<char>();
+            char c;
+            string word = "";
+            while (char.IsLetterOrDigit((char) reader.Peek()))
+            {
+                c = (char) reader.Read();
+                letterList.Add(c);
+            }
+            letterList.ForEach(letter =>
+                {
+                    word += letter;
+                }
+            );
+            return word;
+        }
     }
 }
