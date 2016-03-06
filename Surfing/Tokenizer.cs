@@ -39,6 +39,12 @@ namespace Spider
     {
     }
 
+    public class Quote { }
+
+    public class QuoteBegin : Quote { }
+
+    public class QuoteEnd : Quote { }
+
     public class WordToken : Token
     {
         private readonly string _word;
@@ -112,19 +118,22 @@ namespace Spider
                 else if (Char.IsLetterOrDigit(c))
                 {
                     var word = GetWord(_reader);
-                    if (word == "AND")
+                    if (word.ToUpper() == "AND")
                     {
                         _tokens.AddToken(new AndToken());
                     }
-                    else if (word == "OR")
+                    else if (word.ToUpper() == "OR")
                     {
                         _tokens.AddToken(new OrToken());
                     }
-                    else if (word == "ANDNOT")
+                    else if (word.ToUpper() == "ANDNOT")
                     {
                         _tokens.AddToken(new AndNotToken());
                     }
-                    else { }
+                    else
+                    {
+                        _tokens.AddToken(new WordToken(word));
+                    }
                 }
                
                 
@@ -139,9 +148,16 @@ namespace Spider
             List<char> letterList = new List<char>();
             char c;
             string word = "";
-            while (char.IsLetterOrDigit((char) reader.Peek()))
-            {
+            int nrQuotes = 0;
+            if ('"' == (char)reader.Peek()) nrQuotes++;
+            while (char.IsLetterOrDigit((char)reader.Peek()) && (nrQuotes < 2 || nrQuotes == 1) )
+            { 
                 c = (char) reader.Read();
+                if (c == '"') 
+                {
+                    nrQuotes++;
+                    c = (char)reader.Read();
+                }
                 letterList.Add(c);
             }
             letterList.ForEach(letter =>
