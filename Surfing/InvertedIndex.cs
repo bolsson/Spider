@@ -11,21 +11,21 @@ namespace InvertedIndex
         Dictionary<string, SortedSet<string>> invertedIndex = new Dictionary<string, SortedSet<string>>();
         public void Add(string url, List<string> wordsOnPage)
         {
-            SortedSet<string> urlList;
+            SortedSet<string> urlSet;
 
             foreach (var word in wordsOnPage)
             {
                 if (invertedIndex.ContainsKey(word))
                 {
-                    urlList = invertedIndex[word];
-                    urlList.Add(url);
-                    invertedIndex[word] = urlList;
+                    urlSet = invertedIndex[word];
+                    urlSet.Add(url);
+                    invertedIndex[word] = urlSet;
                 }
                 else
                 {
-                    urlList = new SortedSet<string>();
-                    urlList.Add(url);
-                    invertedIndex.Add(word, urlList);
+                    urlSet = new SortedSet<string>();
+                    urlSet.Add(url);
+                    invertedIndex.Add(word, urlSet);
                 }
                 
             }
