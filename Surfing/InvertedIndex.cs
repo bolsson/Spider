@@ -8,10 +8,10 @@ namespace InvertedIndex
 {
     class InvertedIndex
     {
-        Dictionary<string, List<string>> invertedIndex = new Dictionary<string, List<string>>();
+        Dictionary<string, SortedSet<string>> invertedIndex = new Dictionary<string, SortedSet<string>>();
         public void Add(string url, List<string> wordsOnPage)
         {
-            List<string> urlList;
+            SortedSet<string> urlList;
 
             foreach (var word in wordsOnPage)
             {
@@ -23,7 +23,7 @@ namespace InvertedIndex
                 }
                 else
                 {
-                    urlList = new List<string>();
+                    urlList = new SortedSet<string>();
                     urlList.Add(url);
                     invertedIndex.Add(word, urlList);
                 }
