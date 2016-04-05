@@ -8,6 +8,13 @@ namespace Spider
 {
     class Parser
     {
+        public void query(List<Token> tokens) { }
+
+        public void andTerm(List<Token> tokens) { }
+
+        public void orTerm(List<Token> tokens) { }
+
+        public void term(List<Token> tokens) { }
     }
 
     //NOTE: from https://dzone.com/articles/recursive-descent-parser-c

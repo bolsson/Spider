@@ -1,4 +1,4 @@
 query := andterm | andterm "ANDNOT" query
-andterm := orterm | orterm "AND" andterm
+andterm := orterm | orterm [ "AND" ] andterm
 orterm := term | term "OR" orterm
-term := "(" query ")" | <word>
+term := "(" query ")" | <word> | """ <wordstring> """
