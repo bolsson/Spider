@@ -17,14 +17,26 @@ namespace Spider
     }
     public class AndToken : LogicToken
     {
+        public string toString()
+        {
+            return "AND";
+        }
     }
 
     public class OrToken : LogicToken
     {
+        public string toString()
+        {
+            return "OR";
+        }
     }
 
     public class AndNotToken : LogicToken
     {
+        public string toString()
+        {
+            return "ANDNOT";
+        }
     }
 
     public class ParenthesisToken : Token
@@ -33,13 +45,27 @@ namespace Spider
 
     public class ParenthesisBeginToken : ParenthesisToken
     {
+        public string toString()
+        {
+            return "(";
+        }
     }
 
     public class ParenthesisEndToken : ParenthesisToken
     {
+        public string toString()
+        {
+            return ")";
+        }
     }
 
-    public class Quote { }
+    public class Quote : Token
+    {
+        public string toString()
+        {
+            return "'";
+        }
+    }
 
     public class QuoteBegin : Quote { }
 

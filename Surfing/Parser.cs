@@ -8,13 +8,18 @@ namespace Spider
 {
     class Parser
     {
-        public void query(List<Token> tokens) { }
+        BinaryTreeImp BinaryTree;
+        public Parser()
+        {
+            BinaryTree = new BinaryTreeImp();
+        }
+        public void query(Tokens tokens) { }
 
-        public void andTerm(List<Token> tokens) { }
+        public void andTerm(Tokens tokens) { }
 
-        public void orTerm(List<Token> tokens) { }
+        public void orTerm(Tokens tokens) { }
 
-        public void term(List<Token> tokens) { }
+        public void term(Tokens tokens) { }
     }
 
     //NOTE: from https://dzone.com/articles/recursive-descent-parser-c

@@ -9,10 +9,10 @@ namespace Spider
 
     class Node
     {
-        public string token;
+        public Token token;
         public Node left, right;
 
-        public Node(string token)
+        public Node(Token token)
         {
             this.token = token;
             left = null;
@@ -29,7 +29,7 @@ namespace Spider
         {
             root = null;
         }
-        public Node addNode(string token)
+        public Node addNode(Token token)
         {
             Node newNode = new Node(token);
 
@@ -49,7 +49,7 @@ namespace Spider
             Node temp;
             temp = root;
 
-            if (String.Compare(newNode.token, temp.token) < 0)
+            if (String.Compare(newNode.token.ToString(), temp.token.ToString()) < 0)
             {
                 if (temp.left == null)
                 {
@@ -60,7 +60,7 @@ namespace Spider
                     insertNode(temp.left, newNode);
                 }
             }
-            else if (String.Compare(newNode.token, temp.token) > 0)
+            else if (String.Compare(newNode.token.ToString(), temp.token.ToString()) > 0)
             {
                 if (temp.right == null)
                 {
@@ -80,6 +80,16 @@ namespace Spider
             displayTree(root.left);
             System.Console.Write(root.token + " ");
             displayTree(root.right);
+        }
+
+        public void evaluaterOrder(Node root, ref Queue<Token> queue)
+        {
+            if (root == null) return;
+
+            evaluaterOrder(root.left, ref queue);
+            System.Console.Write(root.token + " ");
+            evaluaterOrder(root.right, ref queue);
+            queue.Enqueue(root.token);
         }
 
         //static void Main(string[] args)
