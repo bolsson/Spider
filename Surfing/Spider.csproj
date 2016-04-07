@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryTree.cs" />
+    <Compile Include="Evaluater.cs" />
     <Compile Include="InvertedIndex.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />

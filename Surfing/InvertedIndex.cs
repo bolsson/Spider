@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InvertedIndex
+namespace Spider
 {
     class InvertedIndex
     {
@@ -29,6 +29,11 @@ namespace InvertedIndex
                 }
                 
             }
+        }
+
+        public SortedSet<string> getSetLinks(WordToken searchWord)
+        {
+            return invertedIndex[searchWord.Word];
         }
     }
 }

@@ -82,15 +82,7 @@ namespace Spider
             displayTree(root.right);
         }
 
-        public void evaluaterOrder(Node root, ref Queue<Token> queue)
-        {
-            if (root == null) return;
 
-            evaluaterOrder(root.left, ref queue);
-            System.Console.Write(root.token + " ");
-            evaluaterOrder(root.right, ref queue);
-            queue.Enqueue(root.token);
-        }
 
         //static void Main(string[] args)
         //{
