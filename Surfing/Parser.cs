@@ -9,17 +9,66 @@ namespace Spider
     class Parser
     {
         BinaryTreeImp BinaryTree;
+        Tokens _tokens;
+        string next = "";
         public Parser()
         {
             BinaryTree = new BinaryTreeImp();
+            _tokens = new Tokens();
+            next = _tokens.PeekToken().ToString();
         }
-        public void query(Tokens tokens) { }
+        private void _query()
+        {
+            _andTerm();
+            if (_tokens.PeekToken().ToString() == "ANDNOT")
+                _query();
+            else
+                return;
+        }
 
-        public void andTerm(Tokens tokens) { }
+        private void _andTerm()
+        {
+            _orTerm();
+            if (_tokens.PeekToken().ToString() == "AND")
+                _andTerm();
+            else
+                return;
+        }
 
-        public void orTerm(Tokens tokens) { }
+        private void _orTerm()
+        {
+            _term();
+            if (_tokens.PeekToken().ToString() == "OR")
+                _orTerm();
+            else
+                return;
+        }
 
-        public void term(Tokens tokens) { }
+        private void _term()
+        {
+            if (_tokens.PeekToken().ToString() == "(")
+            {
+
+                _term();
+            }
+            if (_tokens.PeekToken().ToString() == ")")
+            {
+
+                Token token = _tokens.getNextToken();
+                //add token
+                //evaluate expression so far
+                next = _tokens.PeekToken().ToString();
+                _term();
+            }
+            if (_tokens.PeekToken().ToString() == "'")
+            {
+
+                _term();
+            }
+            if (_tokens.isEmpty())
+                return;
+
+        }
     }
 
     //NOTE: from https://dzone.com/articles/recursive-descent-parser-c

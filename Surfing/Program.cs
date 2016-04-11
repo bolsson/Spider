@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.IO;
-using InvertedIndex;
 
 //using System.Windows.Forms;
 
@@ -22,7 +21,7 @@ namespace Spider
             Spider spider = new Spider();
             LinkTable linkTable = new LinkTable();
             ParseHtml parser = new ParseHtml();
-            InvertedIndex.InvertedIndex store = new InvertedIndex.InvertedIndex();
+            InvertedIndex store = new InvertedIndex();
 
             while (linkTable.HasLink())
             {

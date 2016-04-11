@@ -87,28 +87,32 @@ namespace Spider
     }
     class Tokens
     {
-        private List<Token> _tokenList;
+        private Queue<Token> _tokenQueue;
 
         public Tokens()
         {
-            _tokenList = new List<Token>();
+            _tokenQueue = new Queue<Token>();
         }
 
         public void AddToken(Token token)
         {
-            _tokenList.Add(token);
+            _tokenQueue.Enqueue(token);
         }
 
         public Token getNextToken()
         {
-            var firstToken = _tokenList[0];
-            _tokenList.RemoveAt(0);
+            var firstToken = _tokenQueue.Dequeue();           
             return firstToken;
+        }
+
+        public Token PeekToken()
+        {
+            return _tokenQueue.Peek();
         }
 
         public Boolean isEmpty()
         {
-            return _tokenList.Count() == 0;
+            return _tokenQueue.Count() == 0;
         }
     }
 
