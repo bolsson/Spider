@@ -73,6 +73,20 @@ namespace Spider
             }
         }
 
+        public void insertRootNode(Node root, Node newRootNode)
+        {
+
+        }
+
+        public void insertLeaf(Node root, Node newLeafNode)
+        {
+
+        }
+
+        public void insertBranchNode(Node root, Node newBranchNode)
+        {
+
+        }
         public void displayTree(Node root)
         {
             if (root == null) return;
