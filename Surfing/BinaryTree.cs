@@ -44,48 +44,111 @@ namespace Spider
 
         }
 
-        public void insertNode(Node root, Node newNode)
+        //public void insertNode(Node root, Node newNode)
+        //{
+        //    Node temp;
+        //    temp = root;
+
+        //    if (String.Compare(newNode.token.ToString(), temp.token.ToString()) < 0)
+        //    {
+        //        if (temp.left == null)
+        //        {
+        //            temp.left = newNode;
+        //        }
+        //        else
+        //        {
+        //            insertNode(temp.left, newNode);
+        //        }
+        //    }
+        //    else if (String.Compare(newNode.token.ToString(), temp.token.ToString()) > 0)
+        //    {
+        //        if (temp.right == null)
+        //        {
+        //            temp.right = newNode;
+        //        }
+        //        else
+        //        {
+        //            insertNode(temp.right, newNode);
+        //        }
+        //    }
+        //}
+
+        public void insertRootNode(Node root, Node newRootNode)
+        {
+            //Make sure the new root is a logictoken or return
+            if (newRootNode.GetType() != typeof(LogicToken))
+                return;
+
+            if (string.Compare(root.token.ToString(), newRootNode.token.ToString()) < 0)
+            {
+                newRootNode.right = root;
+            }
+            else if (string.Compare(root.token.ToString(), newRootNode.token.ToString()) >= 0) //0 or 1
+            {
+                newRootNode.left = root;
+            }
+        }
+
+        public void insertLeafNode(Node root, Node newLeafNode)
         {
             Node temp;
             temp = root;
 
-            if (String.Compare(newNode.token.ToString(), temp.token.ToString()) < 0)
+            if (String.Compare(temp.token.ToString(), newLeafNode.token.ToString()) < 0)
             {
                 if (temp.left == null)
                 {
-                    temp.left = newNode;
+                    temp.left = newLeafNode;
                 }
                 else
                 {
-                    insertNode(temp.left, newNode);
+                    insertLeafNode(temp.left, newLeafNode);
                 }
             }
-            else if (String.Compare(newNode.token.ToString(), temp.token.ToString()) > 0)
+            else if (string.Compare(temp.token.ToString(), newLeafNode.token.ToString()) >= 0)
             {
                 if (temp.right == null)
                 {
-                    temp.right = newNode;
+                    temp.right = newLeafNode;
                 }
                 else
                 {
-                    insertNode(temp.right, newNode);
+                    insertLeafNode(temp.right, newLeafNode);
                 }
             }
-        }
-
-        public void insertRootNode(Node root, Node newRootNode)
-        {
-
-        }
-
-        public void insertLeaf(Node root, Node newLeafNode)
-        {
-
         }
 
         public void insertBranchNode(Node root, Node newBranchNode)
         {
+            Node temp;
+            temp = root;
 
+            if (String.Compare(temp.token.ToString(), newBranchNode.token.ToString()) < 0)
+            {
+                if (temp.left == null)
+                {
+                    temp.left = newBranchNode;
+                    newBranchNode.left = temp.right;
+                    temp.right = null;
+                }
+                else
+                {
+                    insertBranchNode(temp.left, newBranchNode);
+                }
+            }
+            else if (String.Compare(temp.token.ToString(), newBranchNode.token.ToString()) > 0)
+            {
+                if (temp.right == null)
+                {
+                    temp.right = newBranchNode;
+                    newBranchNode.right = temp.left;
+                    temp.left = null;
+                }
+                else
+                {
+                    insertBranchNode(temp.right, newBranchNode);
+                }
+            }
         }
         public void displayTree(Node root)
         {
