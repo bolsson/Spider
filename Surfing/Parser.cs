@@ -11,15 +11,11 @@ namespace Spider
         BinaryTreeImp BinaryTree;
         Tokens _tokens;
         string next = "";
-        private Node _leaf;
-        private Node _root;
-        private Queue<Token> branchesQueue;
+        private Stack<Node> branchesStack;
 
         public Parser(Tokens tokens)
         {
-            branchesQueue = new Queue<Token>();
-            _leaf = null;
-            _root = null;
+            branchesStack = new Stack<Node>();
             BinaryTree = new BinaryTreeImp();
             _tokens = tokens;
             next = _tokens.PeekToken().ToString();
@@ -30,13 +26,11 @@ namespace Spider
             if (next.GetType() == typeof(AndNotToken))
             {
                 Token token = _tokens.getNextToken();
-                _root = null;
-                _root = new Node(token);
-                BinaryTree.insertNode(_root, _leaf);
+                BinaryTree.insertNode(new Node(token), branchesStack.Pop());
+                branchesStack.Push(BinaryTree.root);
                 next = _tokens.PeekToken().ToString();
                 _query();
             }
-
             else
                 return;
         }
@@ -47,9 +41,8 @@ namespace Spider
             if (next.GetType() == typeof(AndToken))
             {
                 Token token = _tokens.getNextToken();
-                _root = null;
-                _root = new Node(token);
-                BinaryTree.insertNode(_root, _leaf);
+                BinaryTree.insertNode(new Node(token), branchesStack.Pop());
+                branchesStack.Push(BinaryTree.root);
                 next = _tokens.PeekToken().ToString();
                 _andTerm();
             }
@@ -63,13 +56,11 @@ namespace Spider
             if (next.GetType() == typeof(OrToken))
             {
                 Token token = _tokens.getNextToken();
-                _root = null;
-                _root = new Node(token);
-                BinaryTree.insertNode(_root, _leaf);
+                BinaryTree.insertNode(new Node(token), branchesStack.Pop());
+                branchesStack.Push(BinaryTree.root);
                 next = _tokens.PeekToken().ToString();
                 _orTerm();
             }
-
             else
                 return;
         }
@@ -79,41 +70,30 @@ namespace Spider
             if (next == "(")
             {
                 Token token = _tokens.getNextToken();
-                if (BinaryTree.root != null)
-                {
-                    _root = null;
-                    _root = BinaryTree.root;
-                    BinaryTree = null;
-                    BinaryTree = new BinaryTreeImp();
-                    
-                }
+                BinaryTree = null; //reset the binary tree to ready for a new branch build
                 next = _tokens.PeekToken().ToString();
                 _term();
             }
             if (next == ")")
             {
                 Token token = _tokens.getNextToken();
-                //add token
-                BinaryTree.insertNode(BinaryTree.root, _leaf);
-                _leaf = BinaryTree.root;
-                BinaryTree = null;
-                BinaryTree = new BinaryTreeImp();
-
+                //pop the last two node-branches and combine them, then push their root back on the stack
+                var leaf = branchesStack.Pop();
+                var root = branchesStack.Pop();
+                BinaryTree.insertNode(root, leaf);
+                branchesStack.Push(BinaryTree.root);
                 next = _tokens.PeekToken().ToString();
                 _term();
             }
             if (next.GetType() == typeof(WordToken))
             {
                 Token wordToken = _tokens.getNextToken();
-                //BinaryTree.addNode(wordToken);
-                _leaf = null;
-                _leaf = new Node(wordToken);
+                branchesStack.Push(new Node(wordToken));
                 next = _tokens.PeekToken().ToString();
                 _term();
             }
             if (_tokens.isEmpty())
                 return;
-
         }
     }
 

@@ -85,7 +85,7 @@ namespace Spider
             get { return _word; }
         }
     }
-    class Tokens
+    public class Tokens
     {
         private Queue<Token> _tokenQueue;
 
@@ -116,14 +116,14 @@ namespace Spider
         }
     }
 
-    class Lexer
+    public class Lexer
     {
         private StringReader _reader;
-        private Tokens _tokens;
+        public Tokens tokens;
 
         public Lexer(string queryExpression)
         {
-            _tokens = new Tokens();
+            tokens = new Tokens();
             _reader = new StringReader(queryExpression);
         }
 
@@ -139,30 +139,32 @@ namespace Spider
                 }
                 if (c == '(')
                 {
-                    _tokens.AddToken(new ParenthesisBeginToken());
+                    tokens.AddToken(new ParenthesisBeginToken());
+                    _reader.Read();
                 }
                 else if (c == ')')
                 {
-                    _tokens.AddToken(new ParenthesisEndToken());
+                    tokens.AddToken(new ParenthesisEndToken());
+                    _reader.Read();
                 }
-                else if (Char.IsLetterOrDigit(c))
+                else if (Char.IsLetterOrDigit(c) || c == '"' || c == '\'')
                 {
                     var word = GetWord(_reader);
                     if (word.ToUpper() == "AND")
                     {
-                        _tokens.AddToken(new AndToken());
+                        tokens.AddToken(new AndToken());
                     }
                     else if (word.ToUpper() == "OR")
                     {
-                        _tokens.AddToken(new OrToken());
+                        tokens.AddToken(new OrToken());
                     }
                     else if (word.ToUpper() == "ANDNOT")
                     {
-                        _tokens.AddToken(new AndNotToken());
+                        tokens.AddToken(new AndNotToken());
                     }
                     else
                     {
-                        _tokens.AddToken(new WordToken(word));
+                        tokens.AddToken(new WordToken(word));
                     }
                 }
                
@@ -170,7 +172,7 @@ namespace Spider
                 else
                     throw new Exception("Unknown character in expression: " + c);
             }
-            return _tokens;
+            return tokens;
         }
 
         private string GetWord(StringReader reader)
@@ -179,8 +181,8 @@ namespace Spider
             char c;
             string word = "";
             int nrQuotes = 0;
-            if ('"' == (char)reader.Peek()) nrQuotes++;
-            while (char.IsLetterOrDigit((char)reader.Peek()) && (nrQuotes < 2 || nrQuotes == 1) )
+            if ('"' == (char)reader.Peek() || '\'' == (char)reader.Peek()) nrQuotes++;
+            while (char.IsLetterOrDigit((char)reader.Peek()) || (nrQuotes > 0) )
             { 
                 c = (char) reader.Read();
                 if (c == '"') 
@@ -188,6 +190,7 @@ namespace Spider
                     nrQuotes++;
                     c = (char)reader.Read();
                 }
+                if (nrQuotes > 2) break;
                 letterList.Add(c);
             }
             letterList.ForEach(letter =>
