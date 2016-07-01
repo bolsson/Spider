@@ -9,47 +9,58 @@ namespace Spider
     class Evaluater
     {
         private Queue<Token> queue;
-        private Stack<Token> stack;
+        private Stack<IEnumerable<string>> stack;
+        private InvertedIndex _index;
+        public IEnumerable<string> result;
 
-        public Evaluater(Node root)
+        public Evaluater(Node root, InvertedIndex index)
         {
             queue = new Queue<Token>();
-            stack = new Stack<Token>();
+            this.stack = new Stack<IEnumerable<string>>();
+            _index = new InvertedIndex();
             evaluaterOrder(root);
+            result = stack.Pop();
         }
-        private void evaluaterOrder(Node root)
+        private void evaluaterOrder(Node node)
         {
-            if (root == null) return;
+            if (node == null) return;
 
-            evaluaterOrder(root.left);
-            evaluaterOrder(root.right);
+            evaluaterOrder(node.left);
+            evaluaterOrder(node.right);
             //when both left and right branch has been visited for a node
-            queue.Enqueue(root.token);
+            //queue.Enqueue(root.token);
+            evaluateTwoNodes(node);
         }
 
-        public void evaluate(InvertedIndex index)
+        private void evaluateTwoNodes(Node node)
         {
-            
-            foreach (Token token in queue)
+
+            if (node.token.GetType() == typeof(LogicToken))
             {
-                if (token.GetType() == typeof(WordToken))
-                {
-                    stack.Push(token);
-                }
-                if (token.GetType() == typeof(LogicToken))
-                {
-                    if (stack.Count >= 2) {
-                        if (token.GetType() == typeof(AndToken))
-                        {
-                            var resultSet = index.getSetLinks((WordToken)stack.Pop()).Intersect(index.getSetLinks((WordToken)stack.Pop()));
-                        }
-                        if (token.GetType() == typeof(OrToken))
-                        {
+                evaluate(node.token);
+            }
+            else if (node.token.GetType() == typeof(WordToken))
+            {
+                stack.Push(_index.getSetLinks((WordToken)node.token));
+            }
+        }
 
-                        }
-                    }
-
+        //the evaluater uses Reverse Polish Notation
+        public void evaluate(Token token)
+        {
+            IEnumerable<string> newLinkSet = null;
+            if (stack.Count >= 2)
+            {
+                if (token.GetType() == typeof(AndToken))
+                {
+                    newLinkSet = stack.Pop().Intersect(stack.Pop());
+                    
                 }
+                if (token.GetType() == typeof(OrToken))
+                {
+                    newLinkSet = stack.Pop().Union(stack.Pop());
+                }
+                stack.Push(newLinkSet);
             }
         }
 

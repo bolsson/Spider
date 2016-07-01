@@ -25,3 +25,7 @@ C:\Work\Spider\Testing\bin\HtmlAgilityPack.dll
 C:\Work\Spider\Testing\bin\Spider.pdb
 C:\Work\Spider\Testing\bin\HtmlAgilityPack.pdb
 C:\Work\Spider\Testing\bin\HtmlAgilityPack.xml
+C:\Work\Spider\Testing\bin\Mono.Cecil.dll
+C:\Work\Spider\Testing\bin\nunit.engine.api.dll
+C:\Work\Spider\Testing\bin\nunit.engine.dll
+C:\Work\Spider\Testing\bin\NUnit3.TestAdapter.dll

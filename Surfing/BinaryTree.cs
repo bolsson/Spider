@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Spider
 {
 
-    class Node
+    public class Node
     {
         public Token token;
         public Node left, right;
@@ -20,9 +20,9 @@ namespace Spider
         }
     }
 
-    class BinaryTreeImp
+    public class BinaryTreeImp
     {
-        Node root;
+        public Node root;
         static int count = 0;
 
         public BinaryTreeImp()
@@ -40,9 +40,130 @@ namespace Spider
             }
             count++;
             return newNode;
-
-
         }
+
+
+        public void insertNode(Node root,Node newLeafNode)
+        {
+            Node temp;
+            temp = root;
+            this.root = temp;
+
+            
+            if (String.Compare(temp.token.ToString(), newLeafNode.token.ToString()) < 0)
+            {
+                if (temp.left == null)
+                {
+                    temp.left = newLeafNode;
+                    count++;
+                }
+                else
+                {
+                    insertNode(temp.left, newLeafNode);
+                }
+            }
+            else if (string.Compare(temp.token.ToString(), newLeafNode.token.ToString()) >= 0)
+            {
+                if (temp.right == null)
+                {
+                    temp.right = newLeafNode;
+                    count++;
+                }
+                else
+                {
+                    insertNode(temp.right, newLeafNode);
+                }
+            }
+        }
+
+        //public void insertRootNode(Node root, Node newRootNode)
+        //{
+        //    //Make sure the new root is a logictoken or return
+        //    if (newRootNode.GetType() != typeof(LogicToken))
+        //        return;
+
+        //    if (string.Compare(root.token.ToString(), newRootNode.token.ToString()) < 0)
+        //    {
+        //        newRootNode.right = root;
+        //    }
+        //    else if (string.Compare(root.token.ToString(), newRootNode.token.ToString()) >= 0) //0 or 1
+        //    {
+        //        newRootNode.left = root;
+        //    }
+        //    this.root = root;
+        //}
+
+        //public void insertBranchNode(Node root, Node newBranchNode)
+        //{
+        //    Node temp;
+        //    temp = root;
+
+        //    if (String.Compare(temp.token.ToString(), newBranchNode.token.ToString()) < 0)
+        //    {
+        //        if (temp.left == null)
+        //        {
+        //            temp.left = newBranchNode;
+        //            newBranchNode.left = temp.right;
+        //            temp.right = null;
+        //        }
+        //        else
+        //        {
+        //            insertBranchNode(temp.left, newBranchNode);
+        //        }
+        //    }
+        //    else if (String.Compare(temp.token.ToString(), newBranchNode.token.ToString()) > 0)
+        //    {
+        //        if (temp.right == null)
+        //        {
+        //            temp.right = newBranchNode;
+        //            newBranchNode.right = temp.left;
+        //            temp.left = null;
+        //        }
+        //        else
+        //        {
+        //            insertBranchNode(temp.right, newBranchNode);
+        //        }
+        //    }
+        //}
+        public void convertTreeToList(Node root, ref List<Token> nodeList)
+        {
+            //List<Token> nodeList = new List<Token>();
+            if (root == null) return;
+
+            convertTreeToList(root.left, ref nodeList);
+            //System.Console.Write(root.token + " ");
+            nodeList.Add(root.token);
+            convertTreeToList(root.right, ref nodeList);
+        }
+
+        public void displayTree(Node root)
+        {
+            if (root == null) return;
+
+            displayTree(root.left);
+            System.Console.Write(root.token + " ");
+            displayTree(root.right);
+        }
+
+
+
+        //static void Main(string[] args)
+        //{
+        //    BinaryTreeImp btObj = new BinaryTreeImp();
+        //    Node iniRoot = btObj.addNode(5);
+
+
+        //    btObj.insertNode(btObj.root, iniRoot);
+        //    btObj.insertNode(btObj.root, btObj.addNode(6));
+        //    btObj.insertNode(btObj.root, btObj.addNode(10));
+        //    btObj.insertNode(btObj.root, btObj.addNode(2));
+        //    btObj.insertNode(btObj.root, btObj.addNode(3));
+        //    btObj.displayTree(btObj.root);
+
+        //    System.Console.WriteLine("The sum of nodes are " + count);
+        //    Console.ReadLine();
+
+        //}
 
         //public void insertNode(Node root, Node newNode)
         //{
@@ -71,112 +192,6 @@ namespace Spider
         //            insertNode(temp.right, newNode);
         //        }
         //    }
-        //}
-
-        public void insertRootNode(Node root, Node newRootNode)
-        {
-            //Make sure the new root is a logictoken or return
-            if (newRootNode.GetType() != typeof(LogicToken))
-                return;
-
-            if (string.Compare(root.token.ToString(), newRootNode.token.ToString()) < 0)
-            {
-                newRootNode.right = root;
-            }
-            else if (string.Compare(root.token.ToString(), newRootNode.token.ToString()) >= 0) //0 or 1
-            {
-                newRootNode.left = root;
-            }
-        }
-
-        public void insertLeafNode(Node root, Node newLeafNode)
-        {
-            Node temp;
-            temp = root;
-
-            if (String.Compare(temp.token.ToString(), newLeafNode.token.ToString()) < 0)
-            {
-                if (temp.left == null)
-                {
-                    temp.left = newLeafNode;
-                }
-                else
-                {
-                    insertLeafNode(temp.left, newLeafNode);
-                }
-            }
-            else if (string.Compare(temp.token.ToString(), newLeafNode.token.ToString()) >= 0)
-            {
-                if (temp.right == null)
-                {
-                    temp.right = newLeafNode;
-                }
-                else
-                {
-                    insertLeafNode(temp.right, newLeafNode);
-                }
-            }
-        }
-
-        public void insertBranchNode(Node root, Node newBranchNode)
-        {
-            Node temp;
-            temp = root;
-
-            if (String.Compare(temp.token.ToString(), newBranchNode.token.ToString()) < 0)
-            {
-                if (temp.left == null)
-                {
-                    temp.left = newBranchNode;
-                    newBranchNode.left = temp.right;
-                    temp.right = null;
-                }
-                else
-                {
-                    insertBranchNode(temp.left, newBranchNode);
-                }
-            }
-            else if (String.Compare(temp.token.ToString(), newBranchNode.token.ToString()) > 0)
-            {
-                if (temp.right == null)
-                {
-                    temp.right = newBranchNode;
-                    newBranchNode.right = temp.left;
-                    temp.left = null;
-                }
-                else
-                {
-                    insertBranchNode(temp.right, newBranchNode);
-                }
-            }
-        }
-        public void displayTree(Node root)
-        {
-            if (root == null) return;
-
-            displayTree(root.left);
-            System.Console.Write(root.token + " ");
-            displayTree(root.right);
-        }
-
-
-
-        //static void Main(string[] args)
-        //{
-        //    BinaryTreeImp btObj = new BinaryTreeImp();
-        //    Node iniRoot = btObj.addNode(5);
-
-
-        //    btObj.insertNode(btObj.root, iniRoot);
-        //    btObj.insertNode(btObj.root, btObj.addNode(6));
-        //    btObj.insertNode(btObj.root, btObj.addNode(10));
-        //    btObj.insertNode(btObj.root, btObj.addNode(2));
-        //    btObj.insertNode(btObj.root, btObj.addNode(3));
-        //    btObj.displayTree(btObj.root);
-
-        //    System.Console.WriteLine("The sum of nodes are " + count);
-        //    Console.ReadLine();
-
         //}
     }
 }

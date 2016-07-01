@@ -44,3 +44,7 @@ C:\Work\Spider\Surfing\obj\Debug\Spider.exe
 C:\Work\Spider\Surfing\obj\Debug\Spider.pdb
 C:\Work\Spider\Surfing\bin\Debug\nunit.framework.dll
 C:\Work\Spider\Surfing\bin\Debug\nunit.framework.xml
+C:\Work\Spider\Surfing\bin\Debug\nunit.core.dll
+C:\Work\Spider\Surfing\bin\Debug\nunit.core.interfaces.dll
+C:\Work\Spider\Surfing\bin\Debug\nunit.util.dll
+C:\Work\Spider\Surfing\bin\Debug\NUnit.VisualStudio.TestAdapter.dll
