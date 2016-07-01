@@ -90,12 +90,29 @@ namespace Spider
                 Token wordToken = _tokens.getNextToken();
                 branchesStack.Push(new Node(wordToken));
                 next = _tokens.PeekToken().ToString();
+                buildOrBranchIfNoLogicTokensBetweenWords((WordToken)wordToken);
                 _term();
             }
             if (_tokens.isEmpty())
                 return;
         }
+
+        private void buildOrBranchIfNoLogicTokensBetweenWords(WordToken Word1)
+        {
+            while (next.GetType() == typeof(WordToken))
+            {
+                Token wordToken = _tokens.getNextToken();
+                branchesStack.Push(new Node(wordToken));
+                Node OrNode = new Node(new OrToken());
+                BinaryTree.insertNode(OrNode, branchesStack.Pop());
+                branchesStack.Push(BinaryTree.root);
+                next = _tokens.PeekToken().ToString();
+            }
+
+        }
     }
+
+
 
     //NOTE: from https://dzone.com/articles/recursive-descent-parser-c
     //NOTE: even better http://blog.roboblob.com/2014/12/12/introduction-to-recursive-descent-parsers-with-csharp/
