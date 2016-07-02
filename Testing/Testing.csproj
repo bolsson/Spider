@@ -99,7 +99,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryTreeTest.cs" />
+    <Compile Include="EvaluaterTest1.cs" />
+    <Compile Include="ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TokenizerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Surfing\Spider.csproj">
