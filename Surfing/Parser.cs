@@ -70,7 +70,7 @@ namespace Spider
             if (next == "(")
             {
                 Token token = _tokens.getNextToken();
-                BinaryTree = null; //reset the binary tree to ready for a new branch build
+                BinaryTree = new BinaryTreeImp(); //reset the binary tree to ready for a new branch build
                 next = _tokens.PeekToken().ToString();
                 _term();
             }
@@ -102,9 +102,12 @@ namespace Spider
             while (next.GetType() == typeof(WordToken))
             {
                 Token wordToken = _tokens.getNextToken();
-                branchesStack.Push(new Node(wordToken));
                 Node OrNode = new Node(new OrToken());
-                BinaryTree.insertNode(OrNode, branchesStack.Pop());
+                BinaryTree = new BinaryTreeImp();
+                BinaryTree.insertNode(OrNode, new Node(wordToken));
+                branchesStack.Push(BinaryTree.root);
+                BinaryTree = new BinaryTreeImp();
+                BinaryTree.insertNode(branchesStack.Pop(), branchesStack.Pop());
                 branchesStack.Push(BinaryTree.root);
                 next = _tokens.PeekToken().ToString();
             }

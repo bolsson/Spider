@@ -23,31 +23,31 @@ namespace Spider
     public class BinaryTreeImp
     {
         public Node root;
-        static int count = 0;
+        public int count = 0;
 
         public BinaryTreeImp()
         {
             root = null;
         }
-        public Node addNode(Token token)
-        {
-            Node newNode = new Node(token);
+        //public Node addNode(Token token)
+        //{
+        //    Node newNode = new Node(token);
 
-            if (root == null)
-            {
-                root = newNode;
+        //    if (root == null)
+        //    {
+        //        root = newNode;
 
-            }
-            count++;
-            return newNode;
-        }
+        //    }
+        //    count++;
+        //    return newNode;
+        //}
 
 
         public void insertNode(Node root,Node newLeafNode)
         {
             Node temp;
             temp = root;
-            this.root = temp;
+            if (count == 0) this.root = temp;
 
             
             if (String.Compare(temp.token.ToString(), newLeafNode.token.ToString()) < 0)
@@ -127,13 +127,14 @@ namespace Spider
         //}
         public void convertTreeToList(Node root, ref List<Token> nodeList)
         {
+            var temp = root;
             //List<Token> nodeList = new List<Token>();
             if (root == null) return;
 
-            convertTreeToList(root.left, ref nodeList);
+            convertTreeToList(temp.left, ref nodeList);
             //System.Console.Write(root.token + " ");
-            nodeList.Add(root.token);
-            convertTreeToList(root.right, ref nodeList);
+            nodeList.Add(temp.token);
+            convertTreeToList(temp.right, ref nodeList);
         }
 
         public void displayTree(Node root)
