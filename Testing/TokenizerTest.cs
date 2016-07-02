@@ -20,7 +20,7 @@ namespace Testing
         }
 
         [Test]
-        public void test1()
+        public void testTokens()
         {
             string queryExpression = "(\"good men\" OR (evil OR mean)) AND (man AND woman)";
             _Tokenizer = new Lexer(queryExpression);
