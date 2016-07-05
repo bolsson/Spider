@@ -142,6 +142,28 @@ namespace Testing
             Assert.AreNotEqual(tokenNegativeCheckList, tokenList);
         }
 
+        [Test]
+        public void TestInsertNodeCount()
+        {
+            Node b = new Node(new WordToken("2"));
+            binaryTree.root = b;
+            Assert.AreEqual(1, binaryTree.countNodes(binaryTree.root));
+            Node a = new Node(new WordToken("1"));
+            Node c = new Node(new WordToken("3"));
+            Node e = new Node(new WordToken("9"));
+            Node d = new Node(new WordToken("6"));
+
+
+            binaryTree.insertNode(b, a);
+            binaryTree.insertNode(b, c);
+            binaryTree.insertNode(b, e);
+            binaryTree.insertNode(b, d);
+ 
+            binaryTree.count = 0;
+            Assert.AreEqual(5, binaryTree.countNodes(binaryTree.root));
+
+        }
+
         private Node createTree()
         {
             Node root = new Node(new AndToken());

@@ -33,7 +33,7 @@ namespace Spider
 
         public SortedSet<string> getSetLinks(WordToken searchWord)
         {
-            return invertedIndex[searchWord.Word];
+            return invertedIndex[searchWord.ToString()];
         }
     }
 }

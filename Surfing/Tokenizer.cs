@@ -10,6 +10,10 @@ namespace Spider
 
     public abstract class Token
     {
+        public override string ToString()
+        {
+            return "Base class for Token";
+        }
     }
 
     public class LogicToken : Token
@@ -17,7 +21,7 @@ namespace Spider
     }
     public class AndToken : LogicToken
     {
-        public string toString()
+        public override string ToString()
         {
             return "AND";
         }
@@ -25,7 +29,7 @@ namespace Spider
 
     public class OrToken : LogicToken
     {
-        public string toString()
+        public override string ToString()
         {
             return "OR";
         }
@@ -33,9 +37,9 @@ namespace Spider
 
     public class AndNotToken : LogicToken
     {
-        public string toString()
+        public override string ToString()
         {
-            return "ANDNOT";
+            return "ANDNOT"; ;
         }
     }
 
@@ -45,7 +49,7 @@ namespace Spider
 
     public class ParenthesisBeginToken : ParenthesisToken
     {
-        public string toString()
+        public override string ToString()
         {
             return "(";
         }
@@ -53,7 +57,7 @@ namespace Spider
 
     public class ParenthesisEndToken : ParenthesisToken
     {
-        public string toString()
+        public override string ToString()
         {
             return ")";
         }
@@ -61,7 +65,7 @@ namespace Spider
 
     public class Quote : Token
     {
-        public string toString()
+        public override string ToString()
         {
             return "'";
         }
@@ -80,9 +84,9 @@ namespace Spider
             _word = word;
         }
 
-        public string Word
+        public override string ToString()
         {
-            get { return _word; }
+            return _word;
         }
     }
     public class Tokens

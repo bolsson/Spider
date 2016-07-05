@@ -2,10 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NUnit.Framework;
+using Spider;
 
 namespace Testing
 {
-    public class EvaluaterTest1
+    [TestFixture]
+    public class EvaluaterTest
     {
+        [SetUp]
+        public void Init()
+        {
+
+        }
+
+        [Test]
+        public void Test()
+        {
+
+        }
     }
 }

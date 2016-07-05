@@ -26,9 +26,9 @@ namespace Testing
             _Tokenizer = new Lexer(queryExpression);
             _Tokenizer.Tokenize();
             _tokens = _Tokenizer.tokens;
-            Assert.AreEqual(_tokens.getNextToken().ToString(), "Spider.ParenthesisBeginToken");
-            Assert.AreEqual(((WordToken)_tokens.getNextToken()).Word, "good men");
-            Assert.AreEqual(_tokens.getNextToken().ToString(), "Spider.OrToken");
+            Assert.AreEqual(_tokens.getNextToken().ToString(), "(");
+            Assert.AreEqual(((WordToken)_tokens.getNextToken()).ToString(), "good men");
+            Assert.AreEqual(_tokens.getNextToken().ToString(), "OR");
 
         }
     }

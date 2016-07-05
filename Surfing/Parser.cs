@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Spider
 {
-    class Parser
+    public class Parser
     {
-        BinaryTreeImp BinaryTree;
+        public BinaryTreeImp BinaryTree;
         Tokens _tokens;
-        string next = "";
+        Token next;
         private Stack<Node> branchesStack;
 
         public Parser(Tokens tokens)
@@ -18,7 +18,8 @@ namespace Spider
             branchesStack = new Stack<Node>();
             BinaryTree = new BinaryTreeImp();
             _tokens = tokens;
-            next = _tokens.PeekToken().ToString();
+            next = _tokens.PeekToken();
+            _query();
         }
         private void _query()
         {
@@ -28,7 +29,7 @@ namespace Spider
                 Token token = _tokens.getNextToken();
                 BinaryTree.insertNode(new Node(token), branchesStack.Pop());
                 branchesStack.Push(BinaryTree.root);
-                next = _tokens.PeekToken().ToString();
+                next = _tokens.PeekToken();
                 _query();
             }
             else
@@ -43,7 +44,7 @@ namespace Spider
                 Token token = _tokens.getNextToken();
                 BinaryTree.insertNode(new Node(token), branchesStack.Pop());
                 branchesStack.Push(BinaryTree.root);
-                next = _tokens.PeekToken().ToString();
+                next = _tokens.PeekToken();
                 _andTerm();
             }
             else
@@ -58,7 +59,7 @@ namespace Spider
                 Token token = _tokens.getNextToken();
                 BinaryTree.insertNode(new Node(token), branchesStack.Pop());
                 branchesStack.Push(BinaryTree.root);
-                next = _tokens.PeekToken().ToString();
+                next = _tokens.PeekToken();
                 _orTerm();
             }
             else
@@ -67,14 +68,14 @@ namespace Spider
 
         private void _term()
         {
-            if (next == "(")
+            if (next.GetType() == typeof(ParenthesisBeginToken) && (!_tokens.isEmpty()))
             {
                 Token token = _tokens.getNextToken();
                 BinaryTree = new BinaryTreeImp(); //reset the binary tree to ready for a new branch build
-                next = _tokens.PeekToken().ToString();
+                next = _tokens.PeekToken();
                 _term();
             }
-            if (next == ")")
+            if (next.GetType() == typeof(ParenthesisEndToken) && (!_tokens.isEmpty()))
             {
                 Token token = _tokens.getNextToken();
                 //pop the last two node-branches and combine them, then push their root back on the stack
@@ -82,14 +83,25 @@ namespace Spider
                 var root = branchesStack.Pop();
                 BinaryTree.insertNode(root, leaf);
                 branchesStack.Push(BinaryTree.root);
-                next = _tokens.PeekToken().ToString();
+                if (_tokens.isEmpty()) return;
+                next = _tokens.PeekToken();
                 _term();
             }
-            if (next.GetType() == typeof(WordToken))
+            if (next.GetType() == typeof(WordToken) && (!_tokens.isEmpty()))
             {
                 Token wordToken = _tokens.getNextToken();
                 branchesStack.Push(new Node(wordToken));
-                next = _tokens.PeekToken().ToString();
+                if (_tokens.isEmpty() && BinaryTree.count == 0) //a one word search string
+                {
+                    BinaryTree.root = new Node(wordToken);
+                    return;
+                }
+                if (_tokens.isEmpty())
+                {
+                    BinaryTree.insertNode(BinaryTree.root, new Node(wordToken));
+                    return;
+                }
+                next = _tokens.PeekToken();
                 buildOrBranchIfNoLogicTokensBetweenWords((WordToken)wordToken);
                 _term();
             }
@@ -109,7 +121,8 @@ namespace Spider
                 BinaryTree = new BinaryTreeImp();
                 BinaryTree.insertNode(branchesStack.Pop(), branchesStack.Pop());
                 branchesStack.Push(BinaryTree.root);
-                next = _tokens.PeekToken().ToString();
+                if (_tokens.isEmpty()) return;
+                next = _tokens.PeekToken();
             }
 
         }
