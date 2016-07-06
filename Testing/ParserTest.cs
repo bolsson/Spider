@@ -24,7 +24,7 @@ namespace Testing
         }
 
         [Test]
-        public void TestParserBuildsTree()
+        public void TestParserComplexLogicExpression()
         {
             Tokens tokens = new Tokens();
             tokens.AddToken(new ParenthesisBeginToken());
@@ -50,7 +50,39 @@ namespace Testing
         }
 
         [Test]
-        public void TestInsertSingleWordOnly()
+        public void TestParserSimpleLogicExpression()
+        {
+            Tokens tokens = new Tokens();
+            tokens.AddToken(new ParenthesisBeginToken());
+            tokens.AddToken(new WordToken("w1"));
+            tokens.AddToken(new OrToken());
+            tokens.AddToken(new WordToken("w2"));
+            tokens.AddToken(new ParenthesisEndToken());
+
+            _parser = new Parser(tokens);
+            Node treeRoot = _parser.BinaryTree.root;
+            Assert.AreEqual(3, _parser.BinaryTree.count);
+        }
+
+        [Test]
+        public void TestParserSemiSimpleLogicExpression()
+        {
+            Tokens tokens = new Tokens();
+            tokens.AddToken(new ParenthesisBeginToken());
+            tokens.AddToken(new WordToken("w1"));
+            tokens.AddToken(new OrToken());
+            tokens.AddToken(new WordToken("w2"));
+            tokens.AddToken(new AndToken());
+            tokens.AddToken(new WordToken("w3"));
+            tokens.AddToken(new ParenthesisEndToken());
+
+            _parser = new Parser(tokens);
+            Node treeRoot = _parser.BinaryTree.root;
+            Assert.AreEqual(5, _parser.BinaryTree.count);
+        }
+
+        [Test]
+        public void TestParserSingleWordOnly()
         {
             Tokens tokens = new Tokens();
             tokens.AddToken(new WordToken("good men"));
@@ -61,7 +93,7 @@ namespace Testing
         }
 
         [Test]
-        public void TestInsertWordsOnlyNoLogic()
+        public void TestParserWordsOnlyNoLogic()
         {
             Tokens tokens = new Tokens();
             tokens.AddToken(new WordToken("w1"));
