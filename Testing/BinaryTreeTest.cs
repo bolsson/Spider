@@ -43,8 +43,8 @@ namespace Testing
 
             List<Token> tokenList = new List<Token>();
             binaryTree.convertTreeToList(binaryTree.root, ref tokenList);
-            Assert.AreEqual(6, tokenList.Count);
-            Assert.AreNotEqual(7, tokenList.Count);
+            Assert.AreEqual(tokenList.Count, binaryTree.count);
+            Assert.AreNotEqual(tokenList.Count+1, binaryTree.count);
 
             binaryTree = null;
             Assert.IsNull(binaryTree);
@@ -99,55 +99,55 @@ namespace Testing
             Assert.AreNotSame(no1, binaryTree.root);
         }
 
+        //[Test]
+        //public void TestTraverseOrder()
+        //{
+        //    Node no1 = new Node(new WordToken("1"));
+        //    Node no2 = new Node(new WordToken("2"));
+        //    Node no3 = new Node(new WordToken("3"));
+        //    Node no4 = new Node(new WordToken("4"));
+        //    Node no5 = new Node(new WordToken("5"));
+        //    Node no6 = new Node(new WordToken("6"));
+        //    Node no7 = new Node(new WordToken("7"));
+        //    binaryTree.insertNode(no3, no2);
+        //    binaryTree.insertNode(binaryTree.root, no1);
+        //    binaryTree.insertNode(binaryTree.root, no4);
+        //    binaryTree.insertNode(binaryTree.root, no5);
+        //    binaryTree.insertNode(binaryTree.root, no6);
+
+        //    var tokenCheckList = new List<Token>()
+        //    {
+        //        no3.token,
+        //        no2.token,
+        //        no1.token,
+        //        no4.token,
+        //        no5.token,
+        //        no6.token
+        //    };
+
+        //    var tokenNegativeCheckList = new List<Token>()
+        //    {
+        //        no1.token,
+        //        no2.token,
+        //        no3.token,
+        //        no4.token,
+        //        no5.token,
+        //        no6.token
+        //    };
+
+        //    List<Token> tokenList = new List<Token>();
+        //    binaryTree.convertTreeToList(binaryTree.root, ref tokenList);
+
+        //    Assert.AreEqual(tokenCheckList, tokenList);
+        //    Assert.AreNotEqual(tokenNegativeCheckList, tokenList);
+        //}
+
         [Test]
-        public void TestTraverseOrder()
-        {
-            Node no1 = new Node(new WordToken("1"));
-            Node no2 = new Node(new WordToken("2"));
-            Node no3 = new Node(new WordToken("3"));
-            Node no4 = new Node(new WordToken("4"));
-            Node no5 = new Node(new WordToken("5"));
-            Node no6 = new Node(new WordToken("6"));
-            Node no7 = new Node(new WordToken("7"));
-            binaryTree.insertNode(no3, no2);
-            binaryTree.insertNode(binaryTree.root, no1);
-            binaryTree.insertNode(binaryTree.root, no4);
-            binaryTree.insertNode(binaryTree.root, no5);
-            binaryTree.insertNode(binaryTree.root, no6);
-
-            var tokenCheckList = new List<Token>()
-            {
-                no3.token,
-                no2.token,
-                no1.token,
-                no4.token,
-                no5.token,
-                no6.token
-            };
-
-            var tokenNegativeCheckList = new List<Token>()
-            {
-                no1.token,
-                no2.token,
-                no3.token,
-                no4.token,
-                no5.token,
-                no6.token
-            };
-
-            List<Token> tokenList = new List<Token>();
-            binaryTree.convertTreeToList(binaryTree.root, ref tokenList);
-
-            Assert.AreEqual(tokenCheckList, tokenList);
-            Assert.AreNotEqual(tokenNegativeCheckList, tokenList);
-        }
-
-        [Test]
-        public void TestInsertNodeCount()
+        public void TestInsertNodeCount1()
         {
             Node b = new Node(new WordToken("2"));
-            binaryTree.root = b;
-            Assert.AreEqual(1, binaryTree.countNodes(binaryTree.root));
+            //binaryTree.root = b;
+
             Node a = new Node(new WordToken("1"));
             Node c = new Node(new WordToken("3"));
             Node e = new Node(new WordToken("9"));
@@ -159,9 +159,28 @@ namespace Testing
             binaryTree.insertNode(b, e);
             binaryTree.insertNode(b, d);
  
-            binaryTree.count = 0;
-            Assert.AreEqual(5, binaryTree.countNodes(binaryTree.root));
+            Assert.AreEqual(5, binaryTree.count);
 
+        }
+
+        [Test]
+        public void TestInsertNodeCount2()
+        {
+            Node b = new Node(new WordToken("2"));
+            binaryTree.root = b;
+
+            Node a = new Node(new WordToken("1"));
+            Node c = new Node(new WordToken("3"));
+            Node e = new Node(new WordToken("9"));
+            Node d = new Node(new WordToken("6"));
+
+
+            binaryTree.insertNode(b, a);
+            binaryTree.insertNode(b, c);
+            binaryTree.insertNode(b, e);
+            binaryTree.insertNode(b, d);
+
+            Assert.AreEqual(5, binaryTree.count);
         }
 
         private Node createTree()

@@ -27,6 +27,7 @@ namespace Spider
             if (next.GetType() == typeof(AndNotToken))
             {
                 Token token = _tokens.getNextToken();
+                BinaryTree = new BinaryTreeImp();
                 BinaryTree.insertNode(new Node(token), branchesStack.Pop());
                 branchesStack.Push(BinaryTree.root);
                 next = _tokens.PeekToken();
@@ -42,6 +43,7 @@ namespace Spider
             if (next.GetType() == typeof(AndToken))
             {
                 Token token = _tokens.getNextToken();
+                BinaryTree = new BinaryTreeImp();
                 BinaryTree.insertNode(new Node(token), branchesStack.Pop());
                 branchesStack.Push(BinaryTree.root);
                 next = _tokens.PeekToken();
@@ -57,6 +59,7 @@ namespace Spider
             if (next.GetType() == typeof(OrToken))
             {
                 Token token = _tokens.getNextToken();
+                BinaryTree = new BinaryTreeImp();
                 BinaryTree.insertNode(new Node(token), branchesStack.Pop());
                 branchesStack.Push(BinaryTree.root);
                 next = _tokens.PeekToken();
@@ -81,9 +84,18 @@ namespace Spider
                 //pop the last two node-branches and combine them, then push their root back on the stack
                 var leaf = branchesStack.Pop();
                 var root = branchesStack.Pop();
+                BinaryTree = new BinaryTreeImp();
                 BinaryTree.insertNode(root, leaf);
                 branchesStack.Push(BinaryTree.root);
-                if (_tokens.isEmpty()) return;
+                if (_tokens.isEmpty())
+                {
+                    BinaryTree = new BinaryTreeImp();
+                    leaf = branchesStack.Pop();
+                    root = branchesStack.Pop();
+                    BinaryTree.insertNode(root, leaf);
+                    branchesStack.Push(BinaryTree.root);
+                    return;
+                } 
                 next = _tokens.PeekToken();
                 _term();
             }
@@ -101,6 +113,7 @@ namespace Spider
                     BinaryTree.insertNode(BinaryTree.root, new Node(wordToken));
                     return;
                 }
+
                 next = _tokens.PeekToken();
                 buildOrBranchIfNoLogicTokensBetweenWords((WordToken)wordToken);
                 _term();
@@ -108,6 +121,7 @@ namespace Spider
             if (_tokens.isEmpty())
                 return;
         }
+
 
         private void buildOrBranchIfNoLogicTokensBetweenWords(WordToken Word1)
         {

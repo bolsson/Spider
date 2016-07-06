@@ -22,32 +22,49 @@ namespace Spider
 
     public class BinaryTreeImp
     {
-        public Node root;
-        public int count = 0;
+        private Node _root;
+        private int _count = 0;
+
+        public Node root
+        {
+            get { return _root; }
+            set
+            {
+                _root = value;
+                _count = noOfNodes();
+            }
+        }
+
+        public int count
+        {
+            get { return noOfNodes(); }
+        }
 
         public BinaryTreeImp()
         {
-            root = null;
+            _root = null;
         }
 
         public void insertNode(Node root, Node newLeafNode)
         {
             Node temp;
             temp = root;
-            if (countNodes(this.root) == 0) this.root = temp;
+            if (_count == 0) this.root = temp;
 
-            
-            if (String.Compare(temp.token.ToString(), newLeafNode.token.ToString()) < 0)
-                if (temp.left == null)
-                    temp.left = newLeafNode;
-                else
-                    insertNode(temp.left, newLeafNode);
-            else if (string.Compare(temp.token.ToString(), newLeafNode.token.ToString()) >= 0)
-                if (temp.right == null)
-                    temp.right = newLeafNode;
-                else
-                    insertNode(temp.right, newLeafNode);
+            if (temp.left == null)
+            {
+                temp.left = newLeafNode;
+                _count++;
+            }
+            else if (temp.right == null)
+            {
+                temp.right = newLeafNode;
+                _count++;
+            }
+            else
+                insertNode(temp.right, newLeafNode); //NOTE: should not happen as we build trees with two balances leafs only
         }
+
 
         public void convertTreeToList(Node root, ref List<Token> nodeList)
         {
@@ -58,7 +75,7 @@ namespace Spider
 
             convertTreeToList(temp.right, ref nodeList);
             //System.Console.Write(root.token + " ");
-            
+
             convertTreeToList(temp.left, ref nodeList);
         }
 
@@ -71,15 +88,20 @@ namespace Spider
             displayTree(root.left);
         }
 
-        public int countNodes(Node root)
+        public int noOfNodes()
         {
-            if (root == null) return count;
-            
-            count = countNodes(root.right);
-            
-            count = countNodes(root.left);
-            count++;
-            return count; 
+            _count = 0;
+            return countNodes(root);
+        }
+        private int countNodes(Node root)
+        {
+            if (root == null) return _count;
+
+            _count = countNodes(root.right);
+
+            _count = countNodes(root.left);
+            _count++;
+            return _count;
         }
     }
 }

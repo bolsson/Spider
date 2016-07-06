@@ -29,12 +29,30 @@ namespace Testing
             Tokens tokens = new Tokens();
             tokens.AddToken(new ParenthesisBeginToken());
             tokens.AddToken(new WordToken("good men"));
+            tokens.AddToken(new OrToken());
+            tokens.AddToken(new ParenthesisBeginToken());
+            tokens.AddToken(new WordToken("evil"));
+            tokens.AddToken(new OrToken());
+            tokens.AddToken(new WordToken("bad"));
+            tokens.AddToken(new ParenthesisEndToken());
+            tokens.AddToken(new ParenthesisEndToken());
+            tokens.AddToken(new AndToken());
+            tokens.AddToken(new ParenthesisBeginToken());
+            tokens.AddToken(new WordToken("women"));
+            tokens.AddToken(new AndToken());
+            tokens.AddToken(new WordToken("children"));
+            tokens.AddToken(new ParenthesisEndToken());
 
 
             _parser = new Parser(tokens);
             Node treeRoot = _parser.BinaryTree.root;
+            Assert.AreEqual(9, _parser.BinaryTree.count);
+        }
 
-            Assert.AreEqual(1, _parser.BinaryTree.countNodes(_parser.BinaryTree.root));
+        [Test]
+        public void TestInsertSingleWordOnly()
+        {
+
         }
     }
 }
