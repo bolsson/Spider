@@ -52,7 +52,46 @@ namespace Testing
         [Test]
         public void TestInsertSingleWordOnly()
         {
+            Tokens tokens = new Tokens();
+            tokens.AddToken(new WordToken("good men"));
 
+            _parser = new Parser(tokens);
+            Node treeRoot = _parser.BinaryTree.root;
+            Assert.AreEqual(1, _parser.BinaryTree.count);
         }
+
+        [Test]
+        public void TestInsertWordsOnlyNoLogic()
+        {
+            Tokens tokens = new Tokens();
+            tokens.AddToken(new WordToken("w1"));
+            tokens.AddToken(new WordToken("w2"));
+            tokens.AddToken(new WordToken("w3"));
+            tokens.AddToken(new WordToken("w4"));
+            tokens.AddToken(new WordToken("w5"));
+            tokens.AddToken(new WordToken("w6"));
+            tokens.AddToken(new WordToken("w7"));
+
+            _parser = new Parser(tokens);
+            Node treeRoot = _parser.BinaryTree.root;
+            Assert.AreEqual(13, _parser.BinaryTree.count);
+        }
+
+        //[Test]
+        //public void TestInsertWordMixedAndLogic()
+        //{
+        //    Tokens tokens = new Tokens();
+        //    tokens.AddToken(new WordToken("w1"));
+        //    tokens.AddToken(new WordToken("w2"));
+        //    tokens.AddToken(new WordToken("w3"));
+        //    tokens.AddToken(new WordToken("w4"));
+        //    tokens.AddToken(new WordToken("w5"));
+        //    tokens.AddToken(new WordToken("w6"));
+        //    tokens.AddToken(new WordToken("w7"));
+
+        //    _parser = new Parser(tokens);
+        //    Node treeRoot = _parser.BinaryTree.root;
+        //    Assert.AreEqual(13, _parser.BinaryTree.count);
+        //}
     }
 }

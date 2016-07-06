@@ -18,8 +18,12 @@ namespace Spider
             branchesStack = new Stack<Node>();
             BinaryTree = new BinaryTreeImp();
             _tokens = tokens;
+
             next = _tokens.PeekToken();
-            _query();
+            if (next.ToString() == "(")
+                _query();
+            else //NOTE: if the first token is not a parenthesis then all tokens are treated as word tokens, not logic tokens or others
+                buildOrBranchIfNoLogicTokensBetweenWords();
         }
         private void _query()
         {
@@ -115,7 +119,7 @@ namespace Spider
                 }
 
                 next = _tokens.PeekToken();
-                buildOrBranchIfNoLogicTokensBetweenWords((WordToken)wordToken);
+                //buildOrBranchIfNoLogicTokensBetweenWords((WordToken)wordToken);
                 _term();
             }
             if (_tokens.isEmpty())
@@ -123,11 +127,15 @@ namespace Spider
         }
 
 
-        private void buildOrBranchIfNoLogicTokensBetweenWords(WordToken Word1)
+        private void buildOrBranchIfNoLogicTokensBetweenWords()
         {
-            while (next.GetType() == typeof(WordToken))
+            BinaryTree.root = new Node(_tokens.getNextToken());
+            branchesStack.Push(BinaryTree.root);
+          
+            while (!_tokens.isEmpty())
             {
                 Token wordToken = _tokens.getNextToken();
+
                 Node OrNode = new Node(new OrToken());
                 BinaryTree = new BinaryTreeImp();
                 BinaryTree.insertNode(OrNode, new Node(wordToken));
@@ -135,10 +143,7 @@ namespace Spider
                 BinaryTree = new BinaryTreeImp();
                 BinaryTree.insertNode(branchesStack.Pop(), branchesStack.Pop());
                 branchesStack.Push(BinaryTree.root);
-                if (_tokens.isEmpty()) return;
-                next = _tokens.PeekToken();
             }
-
         }
     }
 
