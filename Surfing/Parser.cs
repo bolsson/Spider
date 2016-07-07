@@ -30,10 +30,7 @@ namespace Spider
             _andTerm();
             if (next.GetType() == typeof(AndNotToken))
             {
-                Token token = _tokens.getNextToken();
-                BinaryTree = new BinaryTreeImp();
-                BinaryTree.insertNode(new Node(token), branchesStack.Pop());
-                branchesStack.Push(BinaryTree.root);
+                newSimpleTree(new Node(_tokens.getNextToken()), branchesStack.Pop());
                 next = _tokens.PeekToken();
                 _query();
             }
@@ -46,10 +43,7 @@ namespace Spider
             _orTerm();
             if (next.GetType() == typeof(AndToken))
             {
-                Token token = _tokens.getNextToken();
-                BinaryTree = new BinaryTreeImp();
-                BinaryTree.insertNode(new Node(token), branchesStack.Pop());
-                branchesStack.Push(BinaryTree.root);
+                newSimpleTree(new Node(_tokens.getNextToken()), branchesStack.Pop());
                 next = _tokens.PeekToken();
                 _andTerm();
             }
@@ -62,10 +56,7 @@ namespace Spider
             _term();
             if (next.GetType() == typeof(OrToken))
             {
-                Token token = _tokens.getNextToken();
-                BinaryTree = new BinaryTreeImp();
-                BinaryTree.insertNode(new Node(token), branchesStack.Pop());
-                branchesStack.Push(BinaryTree.root);
+                newSimpleTree(new Node(_tokens.getNextToken()), branchesStack.Pop());
                 next = _tokens.PeekToken();
                 _orTerm();
             }
@@ -102,15 +93,20 @@ namespace Spider
                 return;
         }
 
+        private void newSimpleTree(Node root, Node leaf)
+        {
+            BinaryTree = new BinaryTreeImp();
+            BinaryTree.insertNode(root, leaf);
+            branchesStack.Push(BinaryTree.root);
+        }
+
         private void _buildTreeFromAllRemainingBranches()
         {
             while (branchesStack.Count > 1)
             {
-                BinaryTree = new BinaryTreeImp();
                 var leaf = branchesStack.Pop();
                 var root = branchesStack.Pop();
-                BinaryTree.insertNode(root, leaf);
-                branchesStack.Push(BinaryTree.root);
+                newSimpleTree(root, leaf);
             }
         }
 
@@ -122,14 +118,9 @@ namespace Spider
             while (!_tokens.isEmpty())
             {
                 Token wordToken = _tokens.getNextToken();
-
                 Node OrNode = new Node(new OrToken());
-                BinaryTree = new BinaryTreeImp();
-                BinaryTree.insertNode(OrNode, new Node(wordToken));
-                branchesStack.Push(BinaryTree.root);
-                BinaryTree = new BinaryTreeImp();
-                BinaryTree.insertNode(branchesStack.Pop(), branchesStack.Pop());
-                branchesStack.Push(BinaryTree.root);
+                newSimpleTree(OrNode, new Node(wordToken));
+                newSimpleTree(branchesStack.Pop(), branchesStack.Pop());
             }
         }
     }
@@ -138,156 +129,5 @@ namespace Spider
 
     //NOTE: from https://dzone.com/articles/recursive-descent-parser-c
     //NOTE: even better http://blog.roboblob.com/2014/12/12/introduction-to-recursive-descent-parsers-with-csharp/
-
-    //public class Tokenizer
-    //{
-    //    private readonly StringReader _reader;
-    //    private string _text;
-
-    //    public Tokenizer(string text)
-    //    {
-    //        _text = text;
-    //        _reader = new StringReader(text);
-    //    }
-
-    //    public IEnumerable<Token> Tokenize()
-    //    {
-    //        var tokens = new List<Token>();
-    //        while (_reader.Peek() != -1)
-    //        {
-    //            while (Char.IsWhiteSpace((char)_reader.Peek()))
-    //            {
-    //                _reader.Read();
-    //            }
-
-    //            if (_reader.Peek() == -1)
-    //                break;
-
-    //            var c = (char)_reader.Peek();
-    //            switch (c)
-    //            {
-    //                case '!':
-    //                    tokens.Add(new NegationToken());
-    //                    _reader.Read();
-    //                    break;
-    //                case '(':
-    //                    tokens.Add(new OpenParenthesisToken());
-    //                    _reader.Read();
-    //                    break;
-    //                case ')':
-    //                    tokens.Add(new ClosedParenthesisToken());
-    //                    _reader.Read();
-    //                    break;
-    //                default:
-    //                    if (Char.IsLetter(c))
-    //                    {
-    //                        var token = ParseKeyword();
-    //                        tokens.Add(token);
-    //                    }
-    //                    else
-    //                    {
-    //                        var remainingText = _reader.ReadToEnd() ?? string.Empty;
-    //                        throw new Exception(string.Format("Unknown grammar found at position {0} : '{1}'", _text.Length - remainingText.Length, remainingText));
-    //                    }
-    //                    break;
-    //            }
-    //        }
-    //        return tokens;
-    //    }
-
-    //    private Token ParseKeyword()
-    //    {
-    //        var text = new StringBuilder();
-    //        while (Char.IsLetter((char)_reader.Peek()))
-    //        {
-    //            text.Append((char)_reader.Read());
-    //        }
-
-    //        var potentialKeyword = text.ToString().ToLower();
-
-    //        switch (potentialKeyword)
-    //        {
-    //            case "true":
-    //                return new TrueToken();
-    //            case "false":
-    //                return new FalseToken();
-    //            case "and":
-    //                return new AndToken();
-    //            case "or":
-    //                return new OrToken();
-    //            default:
-    //                throw new Exception("Expected keyword (True, False, And, Or) but found " + potentialKeyword);
-    //        }
-    //    }
-    //}
-
-
-    //public bool Parse()
-    //{
-    //    while (_tokens.Current != null)
-    //    {
-    //        var isNegated = _tokens.Current is NegationToken;
-    //        if (isNegated)
-    //            _tokens.MoveNext();
-
-    //        var boolean = ParseBoolean();
-    //        if (isNegated)
-    //            boolean = !boolean;
-
-    //        while (_tokens.Current is OperandToken)
-    //        {
-    //            var operand = _tokens.Current;
-    //            if (!_tokens.MoveNext())
-    //            {
-    //                throw new Exception("Missing expression after operand");
-    //            }
-    //            var nextBoolean = ParseBoolean();
-
-    //            if (operand is AndToken)
-    //                boolean = boolean && nextBoolean;
-    //            else
-    //                boolean = boolean || nextBoolean;
-
-    //        }
-
-    //        return boolean;
-    //    }
-
-    //    throw new Exception("Empty expression");
-    //}
-
-
-    //private bool ParseBoolean()
-    //{
-    //    if (_tokens.Current is BooleanValueToken)
-    //    {
-    //        var current = _tokens.Current;
-    //        _tokens.MoveNext();
-
-    //        if (current is TrueToken)
-    //            return true;
-
-    //        return false;
-    //    }
-    //    if (_tokens.Current is OpenParenthesisToken)
-    //    {
-    //        _tokens.MoveNext();
-
-    //        var expInPars = Parse();
-
-    //        if (!(_tokens.Current is ClosedParenthesisToken))
-    //            throw new Exception("Expecting Closing Parenthesis");
-
-    //        _tokens.MoveNext();
-
-    //        return expInPars;
-    //    }
-    //    if (_tokens.Current is ClosedParenthesisToken)
-    //        throw new Exception("Unexpected Closed Parenthesis");
-
-    //    // since its not a BooleanConstant or Expression in parenthesis, it must be a expression again
-    //    var val = Parse();
-    //    return val;
-    //}
 
 }
