@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Spider
 {
-    class InvertedIndex
+    public class InvertedIndex
     {
         Dictionary<string, SortedSet<string>> invertedIndex = new Dictionary<string, SortedSet<string>>();
         public void Add(string url, List<string> wordsOnPage)

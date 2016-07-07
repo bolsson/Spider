@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Spider
 {
-    class Evaluater
+    public class Evaluater
     {
         private Queue<Token> queue;
         private Stack<IEnumerable<string>> stack;
@@ -17,7 +17,7 @@ namespace Spider
         {
             queue = new Queue<Token>();
             this.stack = new Stack<IEnumerable<string>>();
-            _index = new InvertedIndex();
+            _index = index;
             evaluaterOrder(root);
             result = stack.Pop();
         }
@@ -54,11 +54,14 @@ namespace Spider
                 if (token.GetType() == typeof(AndToken))
                 {
                     newLinkSet = stack.Pop().Intersect(stack.Pop());
-                    
                 }
                 if (token.GetType() == typeof(OrToken))
                 {
                     newLinkSet = stack.Pop().Union(stack.Pop());
+                }
+                if (token.GetType() == typeof(AndNotToken))
+                {
+                    newLinkSet = stack.Pop().Except(stack.Pop());
                 }
                 stack.Push(newLinkSet);
             }
