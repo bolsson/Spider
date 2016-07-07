@@ -35,7 +35,7 @@ namespace Spider
         private void evaluateTwoNodes(Node node)
         {
 
-            if (node.token.GetType() == typeof(LogicToken))
+            if (node.token.GetType() == typeof(OrToken) || node.token.GetType() == typeof(AndToken) || node.token.GetType() == typeof(AndNotToken))
             {
                 evaluate(node.token);
             }
@@ -43,6 +43,8 @@ namespace Spider
             {
                 stack.Push(_index.getSetLinks((WordToken)node.token));
             }
+            else
+                throw new System.ArgumentException("Could not determine token type", "node.token");
         }
 
         //the evaluater uses Reverse Polish Notation
@@ -61,7 +63,9 @@ namespace Spider
                 }
                 if (token.GetType() == typeof(AndNotToken))
                 {
-                    newLinkSet = stack.Pop().Except(stack.Pop());
+                    var excluded = stack.Pop();
+                    var included = stack.Pop();
+                    newLinkSet = included.Except(excluded);
                 }
                 stack.Push(newLinkSet);
             }

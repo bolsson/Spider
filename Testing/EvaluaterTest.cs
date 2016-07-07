@@ -10,40 +10,91 @@ namespace Testing
     [TestFixture]
     public class EvaluaterTest
     {
+        string doc1 = "doc1";
+        string doc2 = "doc2";
+        string doc3 = "doc3";
+        string doc4 = "doc4";
+        string doc5 = "doc5";
+        string doc6 = "doc6";
+        InvertedIndex index;
         [SetUp]
         public void Init()
         {
-            string word1 = "word1";
-            string word2 = "word2";
-            string word3 = "word3";
-            string word4 = "word4";
-            string word5 = "word5";
-            string word6 = "word6";
-            //Note fill testdata  into the invertedindex -- in progress
-            InvertedIndex index = new InvertedIndex();
-            index.Add(word1, new List<string>() { "doc1", "doc2", "doc3", "doc4" });
-            index.Add(word2, new List<string>() { "doc2", "doc4", "doc6", "doc8" });
-            index.Add(word3, new List<string>() { "doc3", "doc6", "doc9", "doc12" });
-            index.Add(word4, new List<string>() { "doc4", "doc8", "doc12", "doc16" });
-            index.Add(word5, new List<string>() { "doc5", "doc10", "doc15", "doc20" });
-            index.Add(word6, new List<string>() { "doc6", "doc12", "doc18", "doc24" });
 
+            //Note fill testdata  into the invertedindex -- in progress
+            index = new InvertedIndex();
+            index.Add(doc1, new List<string>() { "word1", "word2", "word3", "word4" });
+            index.Add(doc2, new List<string>() { "word2", "word4", "word6", "word8" });
+            index.Add(doc3, new List<string>() { "word3", "word6", "word9", "word12" });
+            index.Add(doc4, new List<string>() { "word4", "word8", "word12", "word16" });
+            index.Add(doc5, new List<string>() { "word5", "word10", "word15", "word20" });
+            index.Add(doc6, new List<string>() { "word6", "word12", "word18", "word24" });
+        }
+
+        [Test]
+        public void TestOr()
+        {
             Tokens tokens = new Tokens();
-            tokens.AddToken(new WordToken(word1));
-            tokens.AddToken(new AndToken());
-            tokens.AddToken(new WordToken(word2));
+            tokens.AddToken(new WordToken("word1"));
+            tokens.AddToken(new WordToken("word2"));
+            tokens.AddToken(new WordToken("word4"));
+            tokens.AddToken(new WordToken("word6"));
+            tokens.AddToken(new WordToken("word8"));
 
             Parser parse = new Parser(tokens);
             Node root = parse.BinaryTree.root;
 
             Evaluater eval = new Evaluater(root, index);
-            var res = eval.result;
+            List<string> res = eval.result.ToList<string>();
+            Assert.IsNotNull(res);
+            Assert.Contains("doc1", res);
+            Assert.Contains("doc2", res);
+            Assert.Contains("doc3", res);
+            Assert.Contains("doc4", res);
+            Assert.Contains("doc6", res);
+            Assert.AreEqual(5, res.Count);
+            Assert.AreNotEqual(2, res.Count);
         }
 
         [Test]
-        public void Test()
+        public void TestAnd()
         {
+            Tokens tokens = new Tokens();
+            tokens.AddToken(new ParenthesisBeginToken());
+            tokens.AddToken(new WordToken("word6"));
+            tokens.AddToken(new AndToken());
+            tokens.AddToken(new WordToken("word12"));
+            tokens.AddToken(new ParenthesisEndToken());
 
+            Parser parse = new Parser(tokens);
+            Node root = parse.BinaryTree.root;
+
+            Evaluater eval = new Evaluater(root, index);
+            List<string> res = eval.result.ToList<string>();
+            Assert.IsNotNull(res);
+            Assert.Contains("doc6", res);
+            Assert.Contains("doc3", res);
+            Assert.AreEqual(2, res.Count);
+        }
+
+        [Test]
+        public void TestAndNot()
+        {
+            Tokens tokens = new Tokens();
+            tokens.AddToken(new ParenthesisBeginToken());
+            tokens.AddToken(new WordToken("word6"));
+            tokens.AddToken(new AndNotToken());
+            tokens.AddToken(new WordToken("word12"));
+            tokens.AddToken(new ParenthesisEndToken());
+
+            Parser parse = new Parser(tokens);
+            Node root = parse.BinaryTree.root;
+
+            Evaluater eval = new Evaluater(root, index);
+            List<string> res = eval.result.ToList<string>();
+            Assert.IsNotNull(res);
+            Assert.Contains("doc2", res);
+            Assert.AreEqual(1, res.Count);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Spider
 
     public abstract class Token
     {
-        public override string ToString()
+        public virtual string ToString()
         {
             return "Base class for Token";
         }
@@ -18,6 +18,10 @@ namespace Spider
 
     public class LogicToken : Token
     {
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
     public class AndToken : LogicToken
     {
