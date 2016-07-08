@@ -96,5 +96,41 @@ namespace Testing
             Assert.Contains("doc2", res);
             Assert.AreEqual(1, res.Count);
         }
+
+        [Test]
+        public void TestComplexSearchExpression()
+        {
+            Tokens tokens = new Tokens();
+            tokens.AddToken(new ParenthesisBeginToken());
+            tokens.AddToken(new WordToken("word3"));
+            tokens.AddToken(new OrToken());
+            tokens.AddToken(new WordToken("word10"));
+            tokens.AddToken(new OrToken());
+            tokens.AddToken(new WordToken("word9"));
+            tokens.AddToken(new ParenthesisEndToken());
+
+            tokens.AddToken(new AndToken());
+
+            tokens.AddToken(new ParenthesisBeginToken());
+            tokens.AddToken(new WordToken("word2"));
+            tokens.AddToken(new OrToken());
+            tokens.AddToken(new WordToken("word6"));
+            tokens.AddToken(new ParenthesisEndToken());
+
+            tokens.AddToken(new AndNotToken());
+
+            tokens.AddToken(new ParenthesisBeginToken());
+            tokens.AddToken(new WordToken("word12"));
+            tokens.AddToken(new ParenthesisEndToken());
+
+            Parser parse = new Parser(tokens);
+            Node root = parse.BinaryTree.root;
+
+            Evaluater eval = new Evaluater(root, index);
+            List<string> res = eval.result.ToList<string>();
+            Assert.IsNotNull(res);
+            Assert.Contains("doc1", res);
+            Assert.AreEqual(1, res.Count);
+        }
     }
 }
