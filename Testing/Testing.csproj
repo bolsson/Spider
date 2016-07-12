@@ -99,7 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryTreeTest.cs" />
-    <Compile Include="EvaluaterTest1.cs" />
+    <Compile Include="EvaluaterTest.cs" />
     <Compile Include="ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenizerTest.cs" />
